@@ -1,75 +1,76 @@
-const favDiv = document.getElementById('favorites');
+const favDiv = document.getElementById("favorites");
 
-console.log('here it is')
-// fetch favorites from local storage 
+// fetch favorites from local storage
 const getFavorites = () => {
-    return JSON.parse(localStorage.getItem('favorites'));
-}
+  return JSON.parse(localStorage.getItem("favorites"));
+};
 
 // store favorites in local storage
 const setFavorites = (favorites) => {
-   localStorage.setItem('favorites', JSON.stringify(favorites));
-}
+  localStorage.setItem("favorites", JSON.stringify(favorites));
+};
 
+// initial fetching of favorites
 let favorites = getFavorites() == null ? [] : getFavorites();
 
-console.log(favorites);
-
+// Add or remove meals from favorites
 const editFavorites = (id) => {
-    if (favorites.includes(id)) {
-      const newFav = favorites.filter((item) => {
-        return item != id;
-      });
-      favorites = newFav;
-      setFavorites(favorites);
-      alert("Removed from favorites.");
-    } else {
-      favorites.push(id);
-      setFavorites(favorites);
-      alert("Added to favorites.");
-    }
-    window.location.href = 'fav.html';
-  
+  if (favorites.includes(id)) {
+    const newFav = favorites.filter((item) => {
+      return item != id;
+    });
+    favorites = newFav;
+    setFavorites(favorites);
+    alert("Removed from favorites.");
+  } else {
+    favorites.push(id);
+    setFavorites(favorites);
+    alert("Added to favorites.");
+  }
+  window.location.href = "fav.html";
 };
 
 // Function to fetch meal details by ID
 async function fetchMealDetails(mealId) {
-    const response = await fetch(
-      `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`
-    );
-    const data = await response.json();
-    return data.meals[0];
+  const response = await fetch(
+    `https://www.themealdb.com/api/json/v1/1/lookup.php?i=${mealId}`
+  );
+  const data = await response.json();
+  return data.meals[0];
 }
 
+// Details button handler
 async function detailsButtonHandler(mealId) {
-    if (mealId) {
-      const mealDetails = await fetchMealDetails(mealId);
-      if (mealDetails) {
-        localStorage.setItem('selectedMeal', JSON.stringify(mealDetails));
-        window.location.href = 'meal.html';
-      }
+  if (mealId) {
+    const mealDetails = await fetchMealDetails(mealId);
+    if (mealDetails) {
+      localStorage.setItem("selectedMeal", JSON.stringify(mealDetails));
+      window.location.href = "meal.html";
     }
+  }
 }
 
-const getFavoritesMeals = async () =>{
+// getting all favorite meals details in a array
+const getFavoritesMeals = async () => {
   let favoriteMeals = [];
-  for(id of favorites){
+  for (id of favorites) {
     let meal = await fetchMealDetails(id);
     favoriteMeals.push(meal);
   }
   return favoriteMeals;
-}
+};
 
+// rendering favorite meals
 async function renderFavorites() {
-    if (favorites) {
-        favDiv.innerHTML = ``;
-      let favMeals = await getFavoritesMeals();
-      for (meal of favMeals) {
-        let btnName = favorites.includes(parseInt(meal.idMeal))
-          ? "Remove from Favorites"
-          : "Add to Favorites";
-  
-          favDiv.innerHTML += `<div id="${meal.idMeal}" class="card col-md-3 m-1 p-3" style="width: 16rem;">
+  if (favorites) {
+    favDiv.innerHTML = ``;
+    let favMeals = await getFavoritesMeals();
+    for (meal of favMeals) {
+      let btnName = favorites.includes(parseInt(meal.idMeal))
+        ? "Remove from Favorites"
+        : "Add to Favorites";
+
+      favDiv.innerHTML += `<div id="${meal.idMeal}" class="card col-md-3 m-1 p-3" style="width: 16rem;">
               <img src="${meal.strMealThumb}" class="card-img-top" alt="${meal.idMeal}">
               <div class="card-body">
                 <h5 class="card-title">${meal.strMeal}</h5>
@@ -77,10 +78,11 @@ async function renderFavorites() {
                 <button onClick="editFavorites(${meal.idMeal})" class="btn btn-sm btn-primary">${btnName}</button>
               </div>
           </div>`;
-      }
-    } else {
-        favDiv.innerHTML = "<p>No suggestions found.</p>";
     }
+  } else {
+    favDiv.innerHTML = "<p>No suggestions found.</p>";
   }
+}
 
-  renderFavorites();
+// initial rendering
+renderFavorites();

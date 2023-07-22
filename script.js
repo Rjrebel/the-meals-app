@@ -24,7 +24,9 @@ const setFavorites = (favorites) => {
   localStorage.setItem("favorites", JSON.stringify(favorites));
 };
 
+// initial rendering of favorites
 let favorites = getFavorites() == null ? [] : getFavorites();
+
 // Function to update suggestions on the frontend
 async function updateSuggestions() {
   const searchTerm = searchInput.value;
@@ -44,6 +46,7 @@ async function updateSuggestions() {
   }
 }
 
+// Add or Remove favorite meals
 const editFavorites = (id) => {
   if (favorites.includes(id)) {
     const newFav = favorites.filter((item) => {
@@ -80,6 +83,7 @@ async function handleMealClick(event) {
   }
 }
 
+// Details button handler
 async function detailsButtonHandler(mealId) {
   if (mealId) {
     const mealDetails = await fetchMealDetails(mealId);
@@ -90,8 +94,8 @@ async function detailsButtonHandler(mealId) {
   }
 }
 
-// function to get all results from search input
 
+// function to get all results from search input
 async function getSearchResults() {
   const searchTerm = searchInput.value;
   const meals = await fetchMealSuggestions(searchTerm);
