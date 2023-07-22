@@ -1,0 +1,34 @@
+body {
+    font-family: Arial, sans-serif;
+  }
+  
+  h1 {
+    text-align: center;
+  }
+  
+  #searchInput {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom: 10px;
+  }
+  
+  #suggestions {
+    max-width: 400px;
+    margin: 0 auto;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  #suggestions p {
+    cursor: pointer;
+    padding: 5px;
+  }
+  
+  #suggestions p:hover {
+    background-color: #f2f2f2;
+  }
+  
