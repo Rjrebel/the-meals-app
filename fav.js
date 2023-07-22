@@ -65,7 +65,7 @@ async function renderFavorites() {
         favDiv.innerHTML = ``;
       let favMeals = await getFavoritesMeals();
       for (meal of favMeals) {
-        let btnName = favorites.includes(meal.idMeal)
+        let btnName = favorites.includes(parseInt(meal.idMeal))
           ? "Remove from Favorites"
           : "Add to Favorites";
   

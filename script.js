@@ -101,7 +101,7 @@ async function getSearchResults() {
   if (meals) {
     searchResultsDiv.innerHTML = ``;
     for (meal of meals) {
-      let btnName = favorites.includes(meal.idMeal)
+      let btnName = favorites.includes(parseInt(meal.idMeal))
         ? "Remove from Favorites"
         : "Add to Favorites";
 
